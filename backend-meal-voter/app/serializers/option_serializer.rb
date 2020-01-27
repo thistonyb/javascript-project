@@ -1,4 +1,4 @@
 class OptionSerializer
   include FastJsonapi::ObjectSerializer
-  attributes 
+  attributes :name, :votes, :meal_id
 end
