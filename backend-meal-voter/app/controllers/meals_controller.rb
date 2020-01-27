@@ -1,7 +1,7 @@
 class MealsController < ApplicationController
 
     def show
-        meal = Meal.find_by(id: params[:id])
+        meal = Meal.find(params[:id])
         render json: MealSerializer.new(meal)
     end
 
@@ -18,7 +18,7 @@ class MealsController < ApplicationController
     end
 
     def destroy
-        meal = Meal.find_by(id: params[:id])
+        meal = Meal.find(params[:id])
         meal.delete
         render json: MealSerializer.new(meal)
     end
