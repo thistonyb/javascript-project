@@ -1,6 +1,6 @@
 class OptionsController < ApplicationController
     def show
-        option = Option.find(params[:id])
+        option = Option.find_by(id: params[:id])
         render json: OptionSerializer.new(option)
     end
 
@@ -17,7 +17,7 @@ class OptionsController < ApplicationController
     end
 
     def destroy
-        option = Option.find(params[:id])
+        option = Option.find_by(id: params[:id])
         option.delete
         render json: OptionSerializer.new(option)
     end
