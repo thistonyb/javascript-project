@@ -22,11 +22,11 @@ ActiveRecord::Schema.define(version: 2020_01_24_225406) do
   create_table "options", force: :cascade do |t|
     t.string "name"
     t.integer "votes"
-    t.integer "Meal_id", null: false
+    t.integer "meal_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["Meal_id"], name: "index_options_on_Meal_id"
+    t.index ["meal_id"], name: "index_options_on_meal_id"
   end
 
-  add_foreign_key "options", "Meals"
+  add_foreign_key "options", "meals"
 end

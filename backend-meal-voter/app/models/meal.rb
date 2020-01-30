@@ -1,3 +1,3 @@
 class Meal < ApplicationRecord
-    has_many :Options
+    has_many :options
 end

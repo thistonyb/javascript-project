@@ -1,26 +1,35 @@
 class MealsController < ApplicationController
 
     def show
-        meal = Meal.find(params[:id])
-        render json: MealSerializer.new(meal)
+        meal = Meal.find_by(id: params[:id])
+        render json: meal, only: [:id, :name, :date]
+        # included = { include: [:options]}
+        # render json: MealSerializer.new(meal, included)
+
     end
 
     def index
         meals = Meal.all
-        render json: MealSerializer.new(meals)
+        render json: meals, only: [:id, :name, :date]
+        # included = { include: [:options]}
+        # render json: MealSerializer.new(meals, included)
     end
 
     def create
         meal = Meal.new(meal_params)
         if meal.save
-            render json: MealSerializer.new(meal)
+            render json: meal, only: [:id, :name, :date]
+            # included = { include: [:options]}
+            # render json: MealSerializer.new(meal, included)
         end
     end
 
     def destroy
-        meal = Meal.find(params[:id])
+        meal = Meal.find_by(id: params[:id])
         meal.delete
-        render json: MealSerializer.new(meal)
+        render json: meal
+        # included = { include: [:options]}
+        # render json: MealSerializer.new(meal, included)
     end
 
     private
@@ -28,3 +37,7 @@ class MealsController < ApplicationController
             params.require(:meal).permit(:name, :date)
         end
 end
+
+
+
+

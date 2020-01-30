@@ -1,3 +1,3 @@
 class Option < ApplicationRecord
-  belongs_to :Meal
+  belongs_to :meal
 end

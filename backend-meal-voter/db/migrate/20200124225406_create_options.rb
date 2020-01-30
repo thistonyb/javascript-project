@@ -3,7 +3,7 @@ class CreateOptions < ActiveRecord::Migration[6.0]
     create_table :options do |t|
       t.string :name
       t.integer :votes
-      t.references :Meal, null: false, foreign_key: true
+      t.references :meal, null: false, foreign_key: true
 
       t.timestamps
     end
