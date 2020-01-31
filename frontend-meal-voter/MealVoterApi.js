@@ -35,7 +35,9 @@ class MealVoterApi {
       },
       body: JSON.stringify(data)
     };
-    fetch(url + "/" + id, configObj).then(callback);
+    fetch(url + "/" + id, configObj)
+      .then(response => response.json())
+      .then(callback);
   }
   //Call fetch on URL and pass in id and callback with clear and GET methods
   static delete(url, id, callback) {
