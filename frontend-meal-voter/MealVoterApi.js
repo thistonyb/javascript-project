@@ -25,7 +25,7 @@ class MealVoterApi {
       .then(json => renderCallback(json));
   }
 
-  //Call fetch on a URL, patch data, id and pass in GET callback
+  //Call fetch on a URL, patch data, id and pass in GET callback to render
   static patch(url, data, id, callback) {
     let configObj = {
       method: "PATCH",
@@ -35,7 +35,14 @@ class MealVoterApi {
       },
       body: JSON.stringify(data)
     };
-    fetch(url + `/${id}`, configObj).then(callback);
+    fetch(url + "/" + id, configObj).then(callback);
   }
-  static delete() {}
+  //Call fetch on URL and pass in id and callback with clear and GET methods
+  static delete(url, id, callback) {
+    fetch(url + "/" + id, {
+      method: "DELETE"
+    })
+      .then(response => response.json())
+      .then(callback);
+  }
 }
