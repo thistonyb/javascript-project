@@ -1,15 +1,17 @@
 const BASE_URL = "http://localhost:3000";
 const MEALS_URL = `${BASE_URL}/meals`;
 const OPTIONS_URL = `${BASE_URL}/options`;
+
 //Call fetch on a URL and render JSON on a callback
 class MealVoterApi {
-  static get(url, render) {
+  static get(url, renderCallback) {
     fetch(url)
       .then(response => response.json())
-      .then(json => render(json));
+      .then(json => renderCallback(json));
   }
-  //Call fetch on a URL and post data
-  static post(url, data, render) {
+
+  //Call fetch on a URL, post data, render JSON on a callback
+  static post(url, data, renderCallback) {
     let configObj = {
       method: "POST",
       headers: {
@@ -20,8 +22,20 @@ class MealVoterApi {
     };
     fetch(url, configObj)
       .then(response => response.json())
-      .then(json => render(json));
+      .then(json => renderCallback(json));
   }
-  static update() {}
+
+  //Call fetch on a URL, patch data, id and pass in GET callback
+  static patch(url, data, id, callback) {
+    let configObj = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(data)
+    };
+    fetch(url + `/${id}`, configObj).then(callback);
+  }
   static delete() {}
 }
