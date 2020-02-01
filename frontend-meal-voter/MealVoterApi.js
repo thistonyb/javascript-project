@@ -2,16 +2,16 @@ const BASE_URL = "http://localhost:3000";
 const MEALS_URL = `${BASE_URL}/meals`;
 const OPTIONS_URL = `${BASE_URL}/options`;
 
-//Call fetch on a URL and render JSON on a callback
+//Call fetch on a URL with a callback
 class MealVoterApi {
-  static get(url, renderCallback) {
+  static get(url, callback) {
     fetch(url)
       .then(response => response.json())
-      .then(json => renderCallback(json));
+      .then(json => callback(json));
   }
 
-  //Call fetch on a URL, post data, render JSON on a callback
-  static post(url, data, renderCallback) {
+  //Call fetch on a URL, post data for configOBJ, and callback
+  static post(url, data, callback) {
     let configObj = {
       method: "POST",
       headers: {
@@ -22,10 +22,10 @@ class MealVoterApi {
     };
     fetch(url, configObj)
       .then(response => response.json())
-      .then(json => renderCallback(json));
+      .then(json => callback(json));
   }
 
-  //Call fetch on a URL, patch data, id and pass in GET callback to render
+  //Call fetch on a URL, patch data object, id, and pass in GET callback to render
   static patch(url, data, id, callback) {
     let configObj = {
       method: "PATCH",
@@ -39,7 +39,8 @@ class MealVoterApi {
       .then(response => response.json())
       .then(callback);
   }
-  //Call fetch on URL and pass in id and callback with clear and GET methods
+
+  //Call fetch on URL, pass in id, and callback with clear and GET methods
   static delete(url, id, callback) {
     fetch(url + "/" + id, {
       method: "DELETE"
@@ -47,4 +48,16 @@ class MealVoterApi {
       .then(response => response.json())
       .then(callback);
   }
+  //Fetch meals GET and pass to a callback(to render)
+  static getMeal(callback) {
+    MealVoterApi.get(MEALS_URL, callback);
+  }
+  //Fetch meals POST, pass in data for configObj, and pass result to callback(to render)
+  static postMeal(data, callback) {
+    MealVoterApi.post(MEALS_URL, data, callback);
+  }
+
+  static patchMeal() {}
+
+  static deleteMeal() {}
 }
