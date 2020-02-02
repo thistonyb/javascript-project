@@ -25,7 +25,7 @@ class MealVoterApi {
       .then(json => callback(json));
   }
 
-  //Call fetch on a URL, patch data object, id, and pass in GET callback to render
+  //Call fetch on a URL, patch data object, id, and callback
   static patch(url, data, id, callback) {
     let configObj = {
       method: "PATCH",
@@ -40,7 +40,7 @@ class MealVoterApi {
       .then(callback);
   }
 
-  //Call fetch on URL, pass in id, and callback with clear and GET methods
+  //Call fetch on URL, pass in id, and callback
   static delete(url, id, callback) {
     fetch(url + "/" + id, {
       method: "DELETE"
@@ -48,16 +48,24 @@ class MealVoterApi {
       .then(response => response.json())
       .then(callback);
   }
-  //Fetch meals GET and pass to a callback(to render)
+
+  //Fetch meals GET and pass to a callback(just to render)
   static getMeal(callback) {
     MealVoterApi.get(MEALS_URL, callback);
   }
-  //Fetch meals POST, pass in data for configObj, and pass result to callback(to render)
+
+  //Fetch meals POST, pass in data for configObj, and pass result to callback(just to render)
   static postMeal(data, callback) {
     MealVoterApi.post(MEALS_URL, data, callback);
   }
 
-  static patchMeal() {}
+  //Fetch meals PATCH, pass in data for configObj, id, and pass result to callback(getMeals)
+  static patchMeal(data, id, callback) {
+    MealVoterApi.patch(MEALS_URL, data, id, callback);
+  }
 
-  static deleteMeal() {}
+  //Fetch meals DELETE, pass in id, and pass a callback which should call a clear and getMeals methods
+  static deleteMeal(id, callback) {
+    MealVoterApi.delete(MEALS_URL, id, callback);
+  }
 }
