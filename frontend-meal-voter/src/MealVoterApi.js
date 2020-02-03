@@ -49,12 +49,12 @@ class MealVoterApi {
       .then(callback);
   }
 
-  //Fetch meals GET and pass to a callback(just to render)
-  static getMeal(callback) {
+  //Fetch meals GET and pass to a callback(to renderer)
+  static getMeals(callback) {
     MealVoterApi.get(MEALS_URL, callback);
   }
 
-  //Fetch meals POST, pass in data for configObj, and pass result to callback(just to render)
+  //Fetch meals POST, pass in data for configObj, and pass result to callback(to renderer)
   static postMeal(data, callback) {
     MealVoterApi.post(MEALS_URL, data, callback);
   }
@@ -67,5 +67,25 @@ class MealVoterApi {
   //Fetch meals DELETE, pass in id, and pass a callback which should call a clear and getMeals methods
   static deleteMeal(id, callback) {
     MealVoterApi.delete(MEALS_URL, id, callback);
+  }
+
+  //Fetch options GET and pass a callback(to renderer)
+  static getOptions(callback) {
+    MealVoterApi.get(OPTIONS_URL, callback);
+  }
+
+  //Fetch options POST, pass in data for configObj, and pass result to callback(to renderer)
+  static postOption(data, callback) {
+    MealVoterApi.post(OPTIONS_URL, data, callback);
+  }
+
+  //Fetch options PATCH, pass in data for configObj, id, and pass result to callback(getOptions)
+  static patchOption(data, id, callback) {
+    MealVoterApi.patch(OPTIONS_URL, data, id, callback);
+  }
+
+  //Fetch options DELETE, pass in id, and pass a callback which should call a clear and getOptions method
+  static deleteOption(id, callback) {
+    MealVoterApi.delete(OPTIONS_URL, id, callback);
   }
 }
