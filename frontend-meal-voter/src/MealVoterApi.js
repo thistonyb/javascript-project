@@ -4,9 +4,11 @@ const OPTIONS_URL = `${BASE_URL}/options`;
 
 //Call fetch on a URL with a callback
 class MealVoterApi {
-  static get(url, callback) {
+  static get(url, callback, parser) {
     fetch(url)
       .then(response => response.json())
+      //translate to objects here
+      .then(json => MealVoterApi.parseEntities(json, parser))
       .then(json => callback(json));
   }
 
@@ -51,10 +53,10 @@ class MealVoterApi {
 
   //Fetch meals GET and pass to a callback(to renderer)
   static getMeals(callback) {
-    MealVoterApi.get(MEALS_URL, callback);
+    MealVoterApi.get(MEALS_URL, callback, Meal.constructFromJson);
   }
 
-  //Fetch meals POST, pass in data for configObj, and pass result to callback(to renderer)
+  //Fetch meals POST, pass in name & date for configObj, and pass result to callback(to renderer)
   static postMeal(name, date, callback) {
     let data = { name: name, date: date };
     MealVoterApi.post(MEALS_URL, data, callback);
@@ -72,7 +74,7 @@ class MealVoterApi {
 
   //Fetch options GET and pass a callback(to renderer)
   static getOptions(callback) {
-    MealVoterApi.get(OPTIONS_URL, callback);
+    MealVoterApi.get(OPTIONS_URL, callback, Option.constructFromJson);
   }
 
   //Fetch options POST, pass in name and meal_id, and pass result to callback(to renderer)
@@ -81,7 +83,7 @@ class MealVoterApi {
     MealVoterApi.post(OPTIONS_URL, data, callback);
   }
 
-  //Fetch options PATCH, pass in data for configObj, id, and pass result to callback(getOptions)
+  //Fetch options PATCH, pass in votes for configObj, id, and pass result to callback(getOptions)
   static patchOptionVotes(votesNumber, id, callback) {
     let data = { votes: votesNumber };
     MealVoterApi.patch(OPTIONS_URL, data, id, callback);
@@ -90,5 +92,13 @@ class MealVoterApi {
   //Fetch options DELETE, pass in id, and pass a callback which should call a clear and getOptions method
   static deleteOption(id, callback) {
     MealVoterApi.delete(OPTIONS_URL, id, callback);
+  }
+  //Used to parse json object into Meal/Option objects and return an array of them.
+  static parseEntities(json, parser) {
+    const entities = [];
+    for (const obj of json) {
+      entities.push(parser(obj));
+    }
+    return entities;
   }
 }
