@@ -55,7 +55,8 @@ class MealVoterApi {
   }
 
   //Fetch meals POST, pass in data for configObj, and pass result to callback(to renderer)
-  static postMeal(data, callback) {
+  static postMeal(name, date, callback) {
+    let data = { name: name, date: date };
     MealVoterApi.post(MEALS_URL, data, callback);
   }
 
@@ -74,13 +75,15 @@ class MealVoterApi {
     MealVoterApi.get(OPTIONS_URL, callback);
   }
 
-  //Fetch options POST, pass in data for configObj, and pass result to callback(to renderer)
-  static postOption(data, callback) {
+  //Fetch options POST, pass in name and meal_id, and pass result to callback(to renderer)
+  static postOption(name, id, callback) {
+    let data = { name: name, votes: 0, meal_id: id };
     MealVoterApi.post(OPTIONS_URL, data, callback);
   }
 
   //Fetch options PATCH, pass in data for configObj, id, and pass result to callback(getOptions)
-  static patchOption(data, id, callback) {
+  static patchOptionVotes(votesNumber, id, callback) {
+    let data = { votes: votesNumber };
     MealVoterApi.patch(OPTIONS_URL, data, id, callback);
   }
 
