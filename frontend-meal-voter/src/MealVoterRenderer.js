@@ -1,4 +1,7 @@
 class MealVoterRenderer {
+  /**Takes in an array of parsed json objects that are now Meal objects.
+   * Renders each Meal as a div and sets up a button to add Options.
+   */
   static renderMeals(mealObjArray) {
     const main = document.getElementsByTagName("main")[0];
     for (const meal of mealObjArray) {
@@ -24,7 +27,9 @@ class MealVoterRenderer {
       mealCard.appendChild(optionsList);
     }
   }
-
+  /**Takes in an array of parsed json objects that are now Option objects.
+   * Renders the Options as a list item and sets up a vote button on each Option row.
+   */
   static renderOptions(optionObjArray) {
     const cards = document.getElementsByClassName("meal-card");
     const idToUl = {};
@@ -53,4 +58,6 @@ class MealVoterRenderer {
       //voteButton.addEventListener("click", onClickVote);
     }
   }
+
+  static onClickAddOption(event) {}
 }
