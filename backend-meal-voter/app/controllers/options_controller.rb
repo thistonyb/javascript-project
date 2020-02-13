@@ -1,14 +1,14 @@
 class OptionsController < ApplicationController
     def show
         option = Option.find_by(id: params[:id])
-        render json: option, only: [:name, :votes, :meal_id]
+        render json: option, only: [:id, :name, :votes, :meal_id]
         # included = { include: [:meal]}
         # render json: OptionSerializer.new(option, included)
     end
 
     def index
         options = Option.all
-        render json: options, only: [:name, :votes, :meal_id]
+        render json: options, only: [:id, :name, :votes, :meal_id]
         # included = { include: [:meal]}
         # render json: OptionSerializer.new(options, included)
     end
