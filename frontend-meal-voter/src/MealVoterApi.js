@@ -9,7 +9,7 @@ class MealVoterApi {
       .then(response => response.json())
       //translate to objects here
       .then(json => MealVoterApi.parseEntities(json, parser))
-      .then(json => callback(json));
+      .then(obj => callback(obj));
   }
 
   //Call fetch on a URL, post data for configOBJ, and callback
@@ -93,7 +93,7 @@ class MealVoterApi {
   static deleteOption(id, callback) {
     MealVoterApi.delete(OPTIONS_URL, id, callback);
   }
-  //Used to parse json object into Meal/Option objects and return an array of them.
+  //Used to help parse json object into Meal/Option objects and return an array of them.
   static parseEntities(json, parser) {
     const entities = [];
     for (const obj of json) {
