@@ -24,7 +24,7 @@ class MealVoterRenderer {
     submitButton.setAttribute("value", "Create a Meal");
     submitButton.setAttribute("class", "submit-button");
     addMealBanner.appendChild(submitButton);
-    // submitButton.addEventListener("click", )
+    submitButton.addEventListener("click", MealVoterRenderer.onClickAddMeal);
 
     const mealCards = document.createElement("div");
     mealCards.setAttribute("class", "meal-cards");
@@ -36,6 +36,7 @@ class MealVoterRenderer {
    */
   static renderMeals(mealObjArray) {
     const mealCards = document.getElementsByClassName("meal-cards")[0];
+    mealCards.textContent = "";
     for (const meal of mealObjArray) {
       const mealCard = document.createElement("div");
       mealCard.setAttribute("class", "meal-card");
@@ -104,8 +105,27 @@ class MealVoterRenderer {
     }
   }
 
+  static onClickAddMeal(event) {
+    event.preventDefault();
+    const addButton = event.currentTarget;
+    const formElements = addButton.form.elements;
+    const name = formElements[0].value;
+    const date = formElements[1].value;
+    if (name == "" || date == "") {
+      alert("Please enter values in both fields.");
+      return;
+    }
+    MealVoterApi.postMeal(name, date, () =>
+      MealVoterApi.getMeals(getMealsCallback)
+    );
+    formElements[0].value = "";
+    formElements[1].value = "";
+  }
+
   static onClickAddOption(event) {
     const addButton = event.currentTarget;
     const optionsList = addButton.parentElement.getElementsByClassName;
   }
+
+  static onClickVote(event) {}
 }
