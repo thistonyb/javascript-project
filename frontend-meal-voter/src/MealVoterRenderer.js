@@ -31,7 +31,8 @@ class MealVoterRenderer {
     main.appendChild(mealCards);
   }
   /**Takes in an array of parsed json objects that are now Meal objects.
-   * Renders each Meal as a div and sets up a button to add Options.
+   * Renders each Meal as a div card, as well as the meal name and date,
+   * Sets up a Options list, and a form with inputs to submit Options.
    */
   static renderMeals(mealObjArray) {
     const mealCards = document.getElementsByClassName("meal-cards")[0];
@@ -48,14 +49,27 @@ class MealVoterRenderer {
       mealDate.setAttribute("class", "meal-date");
       mealDate.textContent = `${meal.date}`;
       mealCard.appendChild(mealDate);
-      const optionsList = createElement("ul");
+      const optionsList = document.createElement("ul");
       optionsList.setAttribute("class", "options-list");
       mealCard.appendChild(optionsList);
-      const addButton = document.createElement("button");
-      addButton.setAttribute("class", "add-option-button");
-      addButton.textContent = "+ Meal Option";
-      // addButton.addEventListener("click", onClickAddOption);
-      mealCard.appendChild(addButton);
+
+      const addOptionBanner = document.createElement("form");
+      addOptionBanner.setAttribute("class", "add-option-banner");
+      mealCard.appendChild(addOptionBanner);
+      const optionInput = document.createElement("input");
+      optionInput.setAttribute("type", "text");
+      optionInput.setAttribute("name", "name");
+      optionInput.setAttribute("value", "");
+      optionInput.setAttribute("placeholder", "Option Name");
+      optionInput.setAttribute("class", "option-input");
+      addOptionBanner.appendChild(optionInput);
+      const addOptionButton = document.createElement("input");
+      addOptionButton.setAttribute("type", "submit");
+      addOptionButton.setAttribute("name", "submit");
+      addOptionButton.setAttribute("value", "+ Meal Option");
+      addOptionButton.setAttribute("class", "add-option-button");
+      addOptionBanner.appendChild(addOptionButton);
+      // addOptionButton.addEventListener("click", onClickAddOption);
     }
   }
   /**Takes in an array of parsed json objects that are now Option objects.
