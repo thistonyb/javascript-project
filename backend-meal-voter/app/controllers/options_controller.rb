@@ -24,6 +24,15 @@ class OptionsController < ApplicationController
         end
     end
 
+    def update
+        option = Option.find_by(id: params[:id])
+        option.votes = params[:votes]
+        if option.save
+            render json: option, only: [:id, :name, :votes, :meal_id]
+        end
+
+    end
+
     def destroy
         option = Option.find_by(id: params[:id])
         option.delete
