@@ -65,12 +65,16 @@ class MealVoterRenderer {
       optionInput.setAttribute("class", "option-input");
       addOptionBanner.appendChild(optionInput);
       const addOptionButton = document.createElement("input");
+      addOptionButton.setAttribute("meal-id", `${meal.id}`);
       addOptionButton.setAttribute("type", "submit");
       addOptionButton.setAttribute("name", "submit");
       addOptionButton.setAttribute("value", "+ Meal Option");
       addOptionButton.setAttribute("class", "add-option-button");
       addOptionBanner.appendChild(addOptionButton);
-      // addOptionButton.addEventListener("click", onClickAddOption);
+      addOptionButton.addEventListener(
+        "click",
+        MealVoterRenderer.onClickAddOption
+      );
     }
   }
   /**Takes in an array of parsed json objects that are now Option objects.
@@ -96,12 +100,12 @@ class MealVoterRenderer {
       const voteButton = document.createElement("button");
       voteButton.setAttribute("option-id", `${option.id}`);
       voteButton.setAttribute("class", "voteButton");
+      voteButton.setAttribute("votes", `${option.votes}`);
       voteButton.textContent = "Vote!";
+      voteButton.addEventListener("click", MealVoterRenderer.onClickVote);
       li.appendChild(voteButton);
       const ul = idToUl[option.meal_id];
       ul.appendChild(li);
-
-      //voteButton.addEventListener("click", onClickVote);
     }
   }
 
@@ -123,9 +127,28 @@ class MealVoterRenderer {
   }
 
   static onClickAddOption(event) {
+    event.preventDefault();
     const addButton = event.currentTarget;
-    const optionsList = addButton.parentElement.getElementsByClassName;
+    const mealId = addButton.getAttribute("meal-id");
+    const formElements = addButton.form.elements;
+    const option = formElements[0].value;
+    if (option == "") {
+      alert("Please enter a value for a meal option.");
+      return;
+    }
+    MealVoterApi.postOption(option, mealId, () =>
+      MealVoterApi.getMeals(getMealsCallback)
+    );
+    formElements[0].value = "";
   }
 
-  static onClickVote(event) {}
+  static onClickVote(event) {
+    event.preventDefault();
+    const addButton = event.currentTarget;
+    const optionId = addButton.getAttribute("option-id");
+    const votes = addButton.getAttribute("votes");
+    MealVoterApi.patchOptionVotes(1 + parseInt(votes, 10), optionId, () =>
+      MealVoterApi.getMeals(getMealsCallback)
+    );
+  }
 }
