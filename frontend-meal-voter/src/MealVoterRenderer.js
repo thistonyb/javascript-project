@@ -1,4 +1,8 @@
 class MealVoterRenderer {
+  /** This function renders the add meal banner with the form that has the meal
+   * name and date inputs with an event listener. It also renders the card with
+   * all the meal cards on it.
+   */
   static renderPage() {
     const main = document.getElementsByTagName("main")[0];
     const addMealBanner = document.createElement("form");
@@ -31,8 +35,9 @@ class MealVoterRenderer {
     main.appendChild(mealCards);
   }
   /**Takes in an array of parsed json objects that are now Meal objects.
-   * Renders each Meal as a div card, as well as the meal name and date,
-   * Sets up a Options list, and a form with inputs to submit Options.
+   * Renders each Meal as a card, as well as the meal name and date.
+   * Sets up a Options list as a card, and banner card with a form with an
+   * input and submit Option button with an event listener.
    */
   static renderMeals(mealObjArray) {
     const mealCards = document.getElementsByClassName("meal-cards")[0];
@@ -79,6 +84,7 @@ class MealVoterRenderer {
   }
   /**Takes in an array of parsed json objects that are now Option objects.
    * Renders the Options as a list item and sets up a vote button on each Option row.
+   * And an event listener on the vote butoon.
    */
   static renderOptions(optionObjArray) {
     const cards = document.getElementsByClassName("meal-card");
@@ -108,7 +114,7 @@ class MealVoterRenderer {
       ul.appendChild(li);
     }
   }
-
+  /**Callback for the adding the meal submit button event listener. */
   static onClickAddMeal(event) {
     event.preventDefault();
     const addButton = event.currentTarget;
@@ -125,7 +131,7 @@ class MealVoterRenderer {
     formElements[0].value = "";
     formElements[1].value = "";
   }
-
+  /**Callback for adding the option submit button event listener. */
   static onClickAddOption(event) {
     event.preventDefault();
     const addButton = event.currentTarget;
@@ -141,7 +147,7 @@ class MealVoterRenderer {
     );
     formElements[0].value = "";
   }
-
+  /**Callback for vote button event listener. */
   static onClickVote(event) {
     event.preventDefault();
     const addButton = event.currentTarget;
