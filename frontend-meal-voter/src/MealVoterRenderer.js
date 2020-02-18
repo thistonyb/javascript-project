@@ -66,6 +66,7 @@ class MealVoterRenderer {
   /**Takes in an array of parsed json objects that are now Option objects.
    * Renders the Options as a list item and sets up a vote button on each Option row.
    * And an event listener on the vote button.
+   * It also renders the addOptionBanner as a form and its event listener.
    */
   static renderOptions(optionObjArray) {
     const cards = document.getElementsByClassName("meal-card");
