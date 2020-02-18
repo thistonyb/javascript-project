@@ -12,14 +12,14 @@ class MealVoterRenderer {
     nameInput.setAttribute("type", "text");
     nameInput.setAttribute("name", "name");
     nameInput.setAttribute("value", "");
-    nameInput.setAttribute("placeholder", "Meal Name");
+    nameInput.setAttribute("placeholder", "Enter Meal Name");
     nameInput.setAttribute("class", "name-input");
     addMealBanner.appendChild(nameInput);
     const dateInput = document.createElement("input");
     dateInput.setAttribute("type", "text");
     dateInput.setAttribute("name", "date");
     dateInput.setAttribute("value", "");
-    dateInput.setAttribute("placeholder", "Meal Date");
+    dateInput.setAttribute("placeholder", "Enter Meal Date");
     dateInput.setAttribute("class", "date-input");
     addMealBanner.appendChild(dateInput);
     const submitButton = document.createElement("input");
@@ -47,44 +47,25 @@ class MealVoterRenderer {
       mealCard.setAttribute("class", "meal-card");
       mealCard.setAttribute("meal-id", `${meal.id}`);
       mealCards.appendChild(mealCard);
+      const topRow = document.createElement("div");
+      topRow.setAttribute("class", "top-row");
       const mealName = document.createElement("div");
       mealName.setAttribute("class", "meal-name");
       mealName.textContent = `${meal.name}`;
-      mealCard.appendChild(mealName);
+      topRow.appendChild(mealName);
       const mealDate = document.createElement("div");
       mealDate.setAttribute("class", "meal-date");
       mealDate.textContent = `${meal.date}`;
-      mealCard.appendChild(mealDate);
+      topRow.appendChild(mealDate);
+      mealCard.appendChild(topRow);
       const optionsList = document.createElement("ul");
       optionsList.setAttribute("class", "options-list");
       mealCard.appendChild(optionsList);
-
-      const addOptionBanner = document.createElement("form");
-      addOptionBanner.setAttribute("class", "add-option-banner");
-      mealCard.appendChild(addOptionBanner);
-      const optionInput = document.createElement("input");
-      optionInput.setAttribute("type", "text");
-      optionInput.setAttribute("name", "name");
-      optionInput.setAttribute("value", "");
-      optionInput.setAttribute("placeholder", "Option Name");
-      optionInput.setAttribute("class", "option-input");
-      addOptionBanner.appendChild(optionInput);
-      const addOptionButton = document.createElement("input");
-      addOptionButton.setAttribute("meal-id", `${meal.id}`);
-      addOptionButton.setAttribute("type", "submit");
-      addOptionButton.setAttribute("name", "submit");
-      addOptionButton.setAttribute("value", "+ Meal Option");
-      addOptionButton.setAttribute("class", "add-option-button");
-      addOptionBanner.appendChild(addOptionButton);
-      addOptionButton.addEventListener(
-        "click",
-        MealVoterRenderer.onClickAddOption
-      );
     }
   }
   /**Takes in an array of parsed json objects that are now Option objects.
    * Renders the Options as a list item and sets up a vote button on each Option row.
-   * And an event listener on the vote butoon.
+   * And an event listener on the vote button.
    */
   static renderOptions(optionObjArray) {
     const cards = document.getElementsByClassName("meal-card");
@@ -98,9 +79,11 @@ class MealVoterRenderer {
       const li = document.createElement("li");
       li.setAttribute("class", "option-row");
       const optionName = document.createElement("div");
+      optionName.setAttribute("class", "option-name");
       optionName.textContent = `${option.name}`;
       li.appendChild(optionName);
       const optionVotes = document.createElement("div");
+      optionVotes.setAttribute("class", "option-votes");
       optionVotes.textContent = `${option.votes}`;
       li.appendChild(optionVotes);
       const voteButton = document.createElement("button");
@@ -112,6 +95,32 @@ class MealVoterRenderer {
       li.appendChild(voteButton);
       const ul = idToUl[option.meal_id];
       ul.appendChild(li);
+    }
+    for (const mealId in idToUl) {
+      const ul = idToUl[mealId];
+      if (ul.getElementsByTagName("li").length < 9) {
+        const addOptionBanner = document.createElement("form");
+        addOptionBanner.setAttribute("class", "add-option-banner");
+        ul.appendChild(addOptionBanner);
+        const optionInput = document.createElement("input");
+        optionInput.setAttribute("type", "text");
+        optionInput.setAttribute("name", "name");
+        optionInput.setAttribute("value", "");
+        optionInput.setAttribute("placeholder", "Option Name");
+        optionInput.setAttribute("class", "option-input");
+        addOptionBanner.appendChild(optionInput);
+        const addOptionButton = document.createElement("input");
+        addOptionButton.setAttribute("meal-id", `${mealId}`);
+        addOptionButton.setAttribute("type", "submit");
+        addOptionButton.setAttribute("name", "submit");
+        addOptionButton.setAttribute("value", "+ Meal Option");
+        addOptionButton.setAttribute("class", "add-option-button");
+        addOptionBanner.appendChild(addOptionButton);
+        addOptionButton.addEventListener(
+          "click",
+          MealVoterRenderer.onClickAddOption
+        );
+      }
     }
   }
   /**Callback for the adding the meal submit button event listener. */

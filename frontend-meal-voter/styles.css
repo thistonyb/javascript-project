@@ -1,0 +1,143 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: orangered;
+  margin: 0 auto;
+  height: 50px;
+  text-align: center;
+  font-size: x-large;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-gap: 20px;
+  padding-top: 10px;
+  padding-bottom: 30px;
+}
+
+form.add-meal-banner {
+  background-color: orangered;
+  margin: 0 auto;
+  /* height: 100px; */
+  width: 500px;
+  border-radius: 5px;
+}
+
+input.name-input {
+  background-color: white;
+  height: 25px;
+  width: 200px;
+  margin: 18px;
+  box-shadow: 5px 5px black;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+input.date-input {
+  background-color: white;
+  height: 25px;
+  width: 200px;
+  margin: 18px;
+  box-shadow: 5px 5px black;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+input.submit-button {
+  background-color: white;
+  height: 25px;
+  width: 150px;
+  margin: 20px 175px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+div.meal-cards {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+div.meal-card {
+  background-color: #eeeeee;
+  height: 250px;
+  width: 300px;
+  margin: 10px;
+  box-shadow: 10px 10px orangered;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+div.top-row {
+  width: auto;
+  display: inline-flex;
+  justify-content: space-evenly;
+}
+
+div.meal-name {
+  background-color: white;
+  width: 60px;
+  margin: 0px 18px;
+  box-shadow: 5px 5px black;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+div.meal-date {
+  background-color: white;
+  width: 120px;
+  margin: 0px 18px;
+  box-shadow: 5px 5px black;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+ul.options-list {
+  padding: 0;
+}
+
+li.option-row {
+  width: auto;
+  display: flex;
+  justify-content: space-around;
+  margin: 4px 0px;
+}
+
+div.option-name {
+  flex: 1 0 auto;
+}
+
+div.option-votes {
+  margin: 0px 10px;
+}
+
+input.option-input {
+  background-color: white;
+  height: 10px;
+  width: 100px;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+input.add-option-button {
+  background-color: white;
+  height: 24px;
+  width: 100px;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
