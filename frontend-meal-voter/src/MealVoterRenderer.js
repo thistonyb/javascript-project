@@ -57,6 +57,15 @@ class MealVoterRenderer {
       mealDate.setAttribute("class", "meal-date");
       mealDate.textContent = `${meal.date}`;
       topRow.appendChild(mealDate);
+      const deleteButton = document.createElement("button");
+      deleteButton.setAttribute("class", "delete-button");
+      deleteButton.setAttribute("meal-id", `${meal.id}`);
+      deleteButton.textContent = "X";
+      deleteButton.addEventListener(
+        "click",
+        MealVoterRenderer.onClickDeleteMeal
+      );
+      topRow.appendChild(deleteButton);
       mealCard.appendChild(topRow);
       const optionsList = document.createElement("ul");
       optionsList.setAttribute("class", "options-list");
@@ -89,7 +98,7 @@ class MealVoterRenderer {
       li.appendChild(optionVotes);
       const voteButton = document.createElement("button");
       voteButton.setAttribute("option-id", `${option.id}`);
-      voteButton.setAttribute("class", "voteButton");
+      voteButton.setAttribute("class", "vote-button");
       voteButton.setAttribute("votes", `${option.votes}`);
       voteButton.textContent = "Vote!";
       voteButton.addEventListener("click", MealVoterRenderer.onClickVote);
@@ -123,6 +132,34 @@ class MealVoterRenderer {
         );
       }
     }
+  }
+  /**
+   * Fix this...Have to hit button twice or more. Options not deleted
+   * before it trys to delete the Meal card??
+   * @param {*} event Click event to delete Meal
+   */
+  static onClickDeleteMeal(event) {
+    const deleteButton = event.currentTarget;
+    //Can't click multiple times. Spams server and things try to
+    //delete that were already deleted.
+    deleteButton.removeEventListener(
+      "click",
+      MealVoterRenderer.onClickDeleteMeal
+    );
+    const mealId = deleteButton.getAttribute("meal-id");
+    const mealCard = deleteButton.parentNode.parentNode;
+    const voteButtons = mealCard.getElementsByClassName("vote-button");
+    const optionIds = [];
+    for (const voteButton of voteButtons) {
+      optionIds.push(voteButton.getAttribute("option-id"));
+    }
+
+    for (const optionId of optionIds) {
+      MealVoterApi.deleteOption(optionId);
+    }
+    MealVoterApi.deleteMeal(mealId, () =>
+      MealVoterApi.getMeals(getMealsCallback)
+    );
   }
   /**Callback for the adding the meal submit button event listener. */
   static onClickAddMeal(event) {
