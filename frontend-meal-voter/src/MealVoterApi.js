@@ -56,6 +56,14 @@ class MealVoterApi {
     MealVoterApi.get(MEALS_URL, callback, Meal.constructFromJson);
   }
 
+  //Fetch one meal with its options
+  static getMeal(id, callback) {
+    fetch(MEALS_URL + "/" + id)
+      .then(response => response.json())
+      .then(json => Meal.constructFromJson(json))
+      .then(obj => callback(obj));
+  }
+
   //Fetch meals POST, pass in name & date for configObj, and pass result to callback(to renderer)
   static postMeal(name, date, callback) {
     let data = { name: name, date: date };
