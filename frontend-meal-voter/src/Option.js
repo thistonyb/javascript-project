@@ -3,7 +3,7 @@ class Option {
     this.id = id;
     this.name = name;
     this.votes = votes;
-    this.meal_id = mealId;
+    this.mealId = mealId;
   }
   //Takes json object and turns into Option object
   static constructFromJson(json) {
