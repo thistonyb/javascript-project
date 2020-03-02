@@ -2,7 +2,7 @@ class MealsController < ApplicationController
 
     def show
         meal = Meal.find_by(id: params[:id])
-        render json: meal, only: [:id, :name, :date]
+        render json: { id: meal.id, date: meal.date, name: meal.name, options: meal.options }
         # included = { include: [:options]}
         # render json: MealSerializer.new(meal, included)
 
