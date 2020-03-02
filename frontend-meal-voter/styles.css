@@ -28,23 +28,12 @@ form.add-meal-banner {
   border-radius: 5px;
 }
 
-input.name-input {
-  background-color: white;
-  height: 25px;
-  width: 200px;
-  margin: 18px;
-  box-shadow: 5px 5px black;
-  padding: 5px;
-  border-radius: 5px;
-  text-align: center;
-}
-
+input.name-input,
 input.date-input {
   background-color: white;
   height: 25px;
   width: 200px;
   margin: 18px;
-  box-shadow: 5px 5px black;
   padding: 5px;
   border-radius: 5px;
   text-align: center;
@@ -77,6 +66,16 @@ div.meal-card {
   border-radius: 10px;
 }
 
+.zoom-view div.meal-card {
+  height: auto;
+  width: auto;
+}
+
+.zoom-view .option-row,
+.back-button {
+  font-size: xx-large;
+}
+
 div.top-row {
   width: auto;
   display: inline-flex;
@@ -91,6 +90,13 @@ div.meal-name {
   padding: 5px;
   border-radius: 5px;
   text-align: center;
+}
+
+.zoom-view div.meal-name,
+.zoom-view div.meal-date {
+  width: auto;
+  flex: 1 1 auto;
+  font-size: xx-large;
 }
 
 div.meal-date {
