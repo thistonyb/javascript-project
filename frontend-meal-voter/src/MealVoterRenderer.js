@@ -5,6 +5,7 @@ class MealVoterRenderer {
    */
   static renderPage() {
     const main = document.getElementsByTagName("main")[0];
+    main.textContent = "";
     const addMealBanner = document.createElement("form");
     addMealBanner.setAttribute("class", "add-meal-banner");
     main.appendChild(addMealBanner);
@@ -34,29 +35,48 @@ class MealVoterRenderer {
     mealCards.setAttribute("class", "meal-cards");
     main.appendChild(mealCards);
   }
-  /**Takes in an array of parsed json objects that are now Meal objects.
-   * Renders each Meal as a card, as well as the meal name and date.
-   * Sets up a Options list as a card, and banner card with a form with an
-   * input and submit Option button with an event listener.
-   */
-  static renderMeals(mealObjArray) {
-    const mealCards = document.getElementsByClassName("meal-cards")[0];
-    mealCards.textContent = "";
-    for (const meal of mealObjArray) {
-      const mealCard = document.createElement("div");
-      mealCard.setAttribute("class", "meal-card");
-      mealCard.setAttribute("meal-id", `${meal.id}`);
-      mealCards.appendChild(mealCard);
-      const topRow = document.createElement("div");
-      topRow.setAttribute("class", "top-row");
-      const mealName = document.createElement("div");
-      mealName.setAttribute("class", "meal-name");
-      mealName.textContent = `${meal.name}`;
-      topRow.appendChild(mealName);
-      const mealDate = document.createElement("div");
-      mealDate.setAttribute("class", "meal-date");
-      mealDate.textContent = `${meal.date}`;
-      topRow.appendChild(mealDate);
+  static renderZoom(meal) {
+    const main = document.getElementsByTagName("main")[0];
+    main.textContent = "";
+    const zoomView = document.createElement("div");
+    zoomView.setAttribute("class", "zoom-card");
+    main.appendChild(zoomView);
+    const mealCard = MealVoterRenderer.renderMealCard(meal, false);
+    zoomView.appendChild(mealCard);
+    if (meal.options) {
+      const ul = mealCard.getElementsByTagName("ul")[0];
+
+      for (const option of meal.options) {
+        const li = MealVoterRenderer.renderOptionRow(option, () =>
+          MealVoterApi.getMeal(meal.id, MealVoterRenderer.renderZoom)
+        );
+        ul.appendChild(li);
+      }
+    }
+    const backButton = document.createElement("button");
+    backButton.setAttribute("class", "back-button");
+    backButton.textContent = "Back";
+    backButton.addEventListener("click", () => {
+      MealVoterRenderer.renderPage();
+      MealVoterApi.getMeals(getMealsCallback);
+    });
+    main.appendChild(backButton);
+  }
+  static renderMealCard(meal, showDeleteButton) {
+    const mealCard = document.createElement("div");
+    mealCard.setAttribute("class", "meal-card");
+    mealCard.setAttribute("meal-id", `${meal.id}`);
+    const topRow = document.createElement("div");
+    topRow.setAttribute("class", "top-row");
+    const mealName = document.createElement("div");
+    mealName.setAttribute("class", "meal-name");
+    mealName.textContent = `${meal.name}`;
+    topRow.appendChild(mealName);
+    const mealDate = document.createElement("div");
+    mealDate.setAttribute("class", "meal-date");
+    mealDate.textContent = `${meal.date}`;
+    topRow.appendChild(mealDate);
+    if (showDeleteButton) {
       const deleteButton = document.createElement("button");
       deleteButton.setAttribute("class", "delete-button");
       deleteButton.setAttribute("meal-id", `${meal.id}`);
@@ -66,11 +86,53 @@ class MealVoterRenderer {
         MealVoterRenderer.onClickDeleteMeal
       );
       topRow.appendChild(deleteButton);
-      mealCard.appendChild(topRow);
-      const optionsList = document.createElement("ul");
-      optionsList.setAttribute("class", "options-list");
-      mealCard.appendChild(optionsList);
     }
+    mealCard.appendChild(topRow);
+    const optionsList = document.createElement("ul");
+    optionsList.setAttribute("class", "options-list");
+    mealCard.appendChild(optionsList);
+    return mealCard;
+  }
+  /**Takes in an array of parsed json objects that are now Meal objects.
+   * Renders each Meal as a card, as well as the meal name and date.
+   * Sets up a Options list as a card, and banner card with a form with an
+   * input and submit Option button with an event listener.
+   */
+  static renderMeals(mealObjArray) {
+    const mealCards = document.getElementsByClassName("meal-cards")[0];
+    mealCards.textContent = "";
+    for (const meal of mealObjArray) {
+      const mealCard = MealVoterRenderer.renderMealCard(meal, true);
+      const zoomButton = document.createElement("button");
+      zoomButton.setAttribute("class", "zoom-button");
+      zoomButton.setAttribute("meal-id", `${meal.id}`);
+      zoomButton.textContent = "Zoom In";
+      zoomButton.addEventListener("click", MealVoterRenderer.onClickZoom);
+      mealCard.appendChild(zoomButton);
+      mealCards.appendChild(mealCard);
+    }
+  }
+  static renderOptionRow(option, voteRenderCallback) {
+    const li = document.createElement("li");
+    li.setAttribute("class", "option-row");
+    const optionName = document.createElement("div");
+    optionName.setAttribute("class", "option-name");
+    optionName.textContent = `${option.name}`;
+    li.appendChild(optionName);
+    const optionVotes = document.createElement("div");
+    optionVotes.setAttribute("class", "option-votes");
+    optionVotes.textContent = `${option.votes}`;
+    li.appendChild(optionVotes);
+    const voteButton = document.createElement("button");
+    voteButton.setAttribute("option-id", `${option.id}`);
+    voteButton.setAttribute("class", "vote-button");
+    voteButton.setAttribute("votes", `${option.votes}`);
+    voteButton.textContent = "Vote!";
+    voteButton.addEventListener("click", event =>
+      MealVoterRenderer.onClickVote(event, voteRenderCallback)
+    );
+    li.appendChild(voteButton);
+    return li;
   }
   /**Takes in an array of parsed json objects that are now Option objects.
    * Renders the Options as a list item and sets up a vote button on each Option row.
@@ -86,29 +148,15 @@ class MealVoterRenderer {
       idToUl[cardMealId] = ul;
     }
     for (const option of optionObjArray) {
-      const li = document.createElement("li");
-      li.setAttribute("class", "option-row");
-      const optionName = document.createElement("div");
-      optionName.setAttribute("class", "option-name");
-      optionName.textContent = `${option.name}`;
-      li.appendChild(optionName);
-      const optionVotes = document.createElement("div");
-      optionVotes.setAttribute("class", "option-votes");
-      optionVotes.textContent = `${option.votes}`;
-      li.appendChild(optionVotes);
-      const voteButton = document.createElement("button");
-      voteButton.setAttribute("option-id", `${option.id}`);
-      voteButton.setAttribute("class", "vote-button");
-      voteButton.setAttribute("votes", `${option.votes}`);
-      voteButton.textContent = "Vote!";
-      voteButton.addEventListener("click", MealVoterRenderer.onClickVote);
-      li.appendChild(voteButton);
-      const ul = idToUl[option.meal_id];
+      const li = MealVoterRenderer.renderOptionRow(option, () =>
+        MealVoterApi.getMeals(getMealsCallback)
+      );
+      const ul = idToUl[option.mealId];
       ul.appendChild(li);
     }
     for (const mealId in idToUl) {
       const ul = idToUl[mealId];
-      if (ul.getElementsByTagName("li").length < 9) {
+      if (ul.getElementsByTagName("li").length < 7) {
         const addOptionBanner = document.createElement("form");
         addOptionBanner.setAttribute("class", "add-option-banner");
         ul.appendChild(addOptionBanner);
@@ -132,6 +180,11 @@ class MealVoterRenderer {
         );
       }
     }
+  }
+  static onClickZoom(event) {
+    const zoomButton = event.currentTarget;
+    const mealId = zoomButton.getAttribute("meal-id");
+    MealVoterApi.getMeal(mealId, MealVoterRenderer.renderZoom);
   }
   /**
    * Fix this...Have to hit button twice or more. Options not deleted
@@ -195,13 +248,15 @@ class MealVoterRenderer {
     formElements[0].value = "";
   }
   /**Callback for vote button event listener. */
-  static onClickVote(event) {
+  static onClickVote(event, renderCallback) {
     event.preventDefault();
     const addButton = event.currentTarget;
     const optionId = addButton.getAttribute("option-id");
     const votes = addButton.getAttribute("votes");
-    MealVoterApi.patchOptionVotes(1 + parseInt(votes, 10), optionId, () =>
-      MealVoterApi.getMeals(getMealsCallback)
+    MealVoterApi.patchOptionVotes(
+      1 + parseInt(votes, 10),
+      optionId,
+      renderCallback
     );
   }
 }
