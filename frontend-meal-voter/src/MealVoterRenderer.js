@@ -39,7 +39,7 @@ class MealVoterRenderer {
     const main = document.getElementsByTagName("main")[0];
     main.textContent = "";
     const zoomView = document.createElement("div");
-    zoomView.setAttribute("class", "zoom-card");
+    zoomView.setAttribute("class", "zoom-view");
     main.appendChild(zoomView);
     const mealCard = MealVoterRenderer.renderMealCard(meal, false);
     zoomView.appendChild(mealCard);
