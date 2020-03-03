@@ -193,23 +193,22 @@ class MealVoterRenderer {
    */
   static onClickDeleteMeal(event) {
     const deleteButton = event.currentTarget;
-    //Can't click multiple times. Spams server and things try to
-    //delete that were already deleted.
-    deleteButton.removeEventListener(
-      "click",
-      MealVoterRenderer.onClickDeleteMeal
-    );
-    const mealId = deleteButton.getAttribute("meal-id");
-    const mealCard = deleteButton.parentNode.parentNode;
-    const voteButtons = mealCard.getElementsByClassName("vote-button");
-    const optionIds = [];
-    for (const voteButton of voteButtons) {
-      optionIds.push(voteButton.getAttribute("option-id"));
-    }
 
-    for (const optionId of optionIds) {
-      MealVoterApi.deleteOption(optionId);
-    }
+    // deleteButton.removeEventListener(
+    //   "click",
+    //   MealVoterRenderer.onClickDeleteMeal
+    // );
+    const mealId = deleteButton.getAttribute("meal-id");
+    // const mealCard = deleteButton.parentNode.parentNode;
+    // const voteButtons = mealCard.getElementsByClassName("vote-button");
+    // const optionIds = [];
+    // for (const voteButton of voteButtons) {
+    //   optionIds.push(voteButton.getAttribute("option-id"));
+    // }
+
+    // for (const optionId of optionIds) {
+    //   MealVoterApi.deleteOption(optionId);
+    // }
     MealVoterApi.deleteMeal(mealId, () =>
       MealVoterApi.getMeals(getMealsCallback)
     );

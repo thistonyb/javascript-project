@@ -26,6 +26,7 @@ class MealsController < ApplicationController
 
     def destroy
         meal = Meal.find_by(id: params[:id])
+        meal.options.delete_all
         meal.delete
         render json: meal
         # included = { include: [:options]}
